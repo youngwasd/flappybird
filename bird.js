@@ -27,7 +27,7 @@ class Bird {
         } else {
             this.ticksBeforeFalling = (this.ticksBeforeFalling || 0) + 1;
             
-            if (this.ticksBeforeFalling > 30) {
+            if (this.ticksBeforeFalling > 50) {
                 this.y += this.speed * elapsed;
             }
 
