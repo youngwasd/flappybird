@@ -4,8 +4,8 @@ class Pipe {
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/pipes.png");
         this.animator = [];
 
-        this.animator[0] = new Animator(this.spritesheet, 0, 0, 28, 164, 1, 0.2);
-        this.animator[1] = new Animator(this.spritesheet, 28, 0, 28, 164, 1, 0.2);
+        this.animator[0] = new Animator(this.spritesheet, 0, 0, 28, 164, 1, 0.2, 2);
+        this.animator[1] = new Animator(this.spritesheet, 28, 0, 28, 164, 1, 0.2, 2);
 
         this.x = 1330;
         this.bottomPipeY = 450;

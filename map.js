@@ -8,6 +8,14 @@ class Map {
 
     }
 
+    getWidth() {
+        return this.width;
+    }
+
+    getHeight() {
+        return this.height;
+    }
+
     draw(ctx) {
         ctx.drawImage(this.background, this.x, this.y, this.width, this.height);
     }

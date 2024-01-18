@@ -1,7 +1,7 @@
 class Tongue {
     constructor(game) {
         this.game = game;
-        this.animator = new Animator(ASSET_MANAGER.getAsset("./tongue.png"), 1.5, 0, 56.3, 55, 7, 0.2);
+        this.animator = new Animator(ASSET_MANAGER.getAsset("./tongue.png"), 1.5, 0, 56.3, 55, 7, 0.2, 2);
 
         this.x = 1280;
         this.y = 300;

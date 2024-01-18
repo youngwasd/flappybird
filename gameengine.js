@@ -10,10 +10,9 @@ class GameEngine {
         this.entities = [];
 
         // Information on the input
-        this.click = null;
-        this.mouse = null;
-        this.wheel = null;
-        this.keys = {};
+        this.space = false;
+
+        this.gamepad = null;
 
         // Options and the Details
         this.options = options || {
@@ -37,44 +36,33 @@ class GameEngine {
     };
 
     startInput() {
-        const getXandY = e => ({
-            x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
-            y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
-        });
-        
-        this.ctx.canvas.addEventListener("mousemove", e => {
-            if (this.options.debugging) {
-                console.log("MOUSE_MOVE", getXandY(e));
+        this.keyboardActive = false;
+    
+        const keydownListener = (e) => {
+            this.keyboardActive = true;
+            switch (e.code) {
+                case "Space":
+                    this.space = true;
+                    break;
             }
-            this.mouse = getXandY(e);
-        });
-
-        this.ctx.canvas.addEventListener("click", e => {
-            if (this.options.debugging) {
-                console.log("CLICK", getXandY(e));
+        };
+    
+        const keyupListener = (e) => {
+            this.keyboardActive = false;
+            switch (e.code) {
+                case "Space":
+                    this.space = false;
+                    break;
             }
-            this.click = getXandY(e);
-        });
-
-        this.ctx.canvas.addEventListener("wheel", e => {
-            if (this.options.debugging) {
-                console.log("WHEEL", getXandY(e), e.wheelDelta);
-            }
-            e.preventDefault(); // Prevent Scrolling
-            this.wheel = e;
-        });
-
-        this.ctx.canvas.addEventListener("contextmenu", e => {
-            if (this.options.debugging) {
-                console.log("RIGHT_CLICK", getXandY(e));
-            }
-            e.preventDefault(); // Prevent Context Menu
-            this.rightclick = getXandY(e);
-        });
-
-        this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
-        this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
+        };
+    
+        this.keydown = keydownListener;
+        this.keyup = keyupListener;
+    
+        this.ctx.canvas.addEventListener("keydown", this.keydown, false);
+        this.ctx.canvas.addEventListener("keyup", this.keyup, false);
     };
+    
 
     addEntity(entity) {
         this.entities.push(entity);
@@ -90,8 +78,19 @@ class GameEngine {
         }
     };
 
+    gamepadUpdate() {
+        this.gamepad = navigator.getGamepads()[0];
+        let gamepad = this.gamepad;
+
+        if (gamepad != null && !this.keyboardActive) {
+            this.space = gamepad.buttons[0].pressed || (this.gamepad.axes[1] < -0.5);
+        }
+    }
+
     update() {
         let entitiesCount = this.entities.length;
+
+        this.gamepadUpdate();
 
         for (let i = 0; i < entitiesCount; i++) {
             let entity = this.entities[i];
