@@ -3,14 +3,17 @@ const gameEngine = new GameEngine();
 const ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./tongue.png");
+ASSET_MANAGER.queueDownload("./sprites/bird.png");
+ASSET_MANAGER.queueDownload("./sprites/map.png");
+ASSET_MANAGER.queueDownload("./sprites/pipes.png");
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
 	const ctx = canvas.getContext("2d");
 
-	gameEngine.addEntity(new Tongue(gameEngine));
-
 	gameEngine.init(ctx);
+
+	new SceneManager(gameEngine);
 
 	gameEngine.start();
 });
