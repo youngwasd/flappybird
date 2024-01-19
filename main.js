@@ -2,7 +2,6 @@ const gameEngine = new GameEngine();
 
 const ASSET_MANAGER = new AssetManager();
 
-ASSET_MANAGER.queueDownload("./tongue.png");
 ASSET_MANAGER.queueDownload("./sprites/bird.png");
 ASSET_MANAGER.queueDownload("./sprites/map.png");
 ASSET_MANAGER.queueDownload("./sprites/pipes.png");
