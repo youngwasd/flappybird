@@ -46,7 +46,7 @@ class GameEngine {
                     break;
             }
         };
-    
+
         const keyupListener = (e) => {
             this.keyboardActive = false;
             switch (e.code) {
@@ -114,5 +114,3 @@ class GameEngine {
     };
 
 };
-
-// KV Le was here :)
