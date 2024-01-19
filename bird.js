@@ -10,7 +10,7 @@ class Bird {
         this.animations[2] = new Animator(this.spritesheet, 53, 0, 24, 15, 1, 0.2, 2.5);
 
         this.x = 300;
-        this.y = 200;
+        this.y = 350;
         this.speed = 200;
 
         this.mapWidth = this.map.getWidth();
