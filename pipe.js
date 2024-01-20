@@ -11,11 +11,13 @@ class Pipe {
         this.bottomPipeY = 450;
         this.topPipeY = -50;
         this.speed = 150;
+        this.point = 0;
     }
 
     update() {
         this.x -= this.speed * this.game.clockTick;
 
+        //if (this.x <= 300) this.point++;
         if (this.x <= -50) this.x = 1330;
     }
 

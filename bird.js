@@ -7,11 +7,13 @@ class Bird {
 
         this.animations[0] = new Animator(this.spritesheet, 0, 0, 24, 15, 1, 0.2, 2.5);
         this.animations[1] = new Animator(this.spritesheet, 24, 0, 29, 15, 1, 0.2, 2.5);
-        this.animations[2] = new Animator(this.spritesheet, 53, 0, 24, 15, 1, 0.2, 2.5);
+        this.animations[2] = new Animator(this.spritesheet, 56, 0, 24, 15, 1, 0.2, 2.5);
 
         this.x = 300;
         this.y = 350;
         this.speed = 200;
+
+        this.i = 1;
 
         this.mapWidth = this.map.getWidth();
         this.mapHeight = this.map.getHeight();
@@ -25,13 +27,16 @@ class Bird {
             deltaY -= (this.speed + 100) * elapsed;
             this.spacePressed = true;
             this.ticksBeforeFalling = 0;
+            this.i = 0;
         } else {
             this.ticksBeforeFalling = (this.ticksBeforeFalling || 0) + 1;
             
             if (this.ticksBeforeFalling > 60) {
                 deltaY += this.speed * elapsed;
+                this.i = 2;
             } else if (this.ticksBeforeFalling <= 60) {
                 deltaY -= (this.speed + 100) * elapsed;
+                this.i = 0;
             }
 
             this.spacePressed = this.game.space;
@@ -48,6 +53,6 @@ class Bird {
     }
 
     draw(ctx) {
-        this.animations[0].drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        this.animations[this.i].drawFrame(this.game.clockTick, ctx, this.x, this.y);
     }
 }
