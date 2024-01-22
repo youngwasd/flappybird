@@ -17,12 +17,15 @@ class Pipe {
     update() {
         this.x -= this.speed * this.game.clockTick;
 
-        //if (this.x <= 300) this.point++;
+        if (this.x < 200) this.point++; // scoring broken
         if (this.x <= -50) this.x = 1330;
     }
 
     draw(ctx) {
         this.animator[0].drawFrame(this.game.clockTick, ctx, this.x, this.topPipeY);
         this.animator[1].drawFrame(this.game.clockTick, ctx, this.x, this.bottomPipeY);
+        ctx.font = "30px Arial";
+        ctx.fillStyle = "black";
+        ctx.fillText("Score: " + this.point, 10, 50);
     }
 }
