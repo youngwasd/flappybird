@@ -6,6 +6,7 @@ class Bird {
         this.animations = [];
 
         this.scale = 2.5;
+        this.dead = false;
 
         this.animations[0] = new Animator(this.spritesheet, 0, 0, 24, 15, 1, 0.2, this.scale);
         this.animations[1] = new Animator(this.spritesheet, 24, 0, 29, 15, 1, 0.2, this.scale);
@@ -28,7 +29,7 @@ class Bird {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, this.birdWidth * 1.8, this.birdHeight * this.scale);
+        this.BB = new BoundingBox(this.x, this.y, this.birdWidth * this.scale, this.birdHeight * this.scale);
     }
 
     update() {
@@ -63,17 +64,10 @@ class Bird {
 
         this.y = Math.max(0, Math.min(this.y, this.mapHeight - this.animations[0].height));
 
+        this.birdWidth = this.animations[this.i].width;
+        this.birdHeight = this.animations[this.i].height;
 
         // collision
-        let that = this;
-        this.game.entities.forEach(function (entity) {
-            if (entity.BB && that.BB.collide(entity.BB)) {
-                if (entity instanceof Pipe) {
-                    this.dead = true;
-                }
-            }
-        });
-
         this.updateBB();
     }
 

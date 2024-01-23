@@ -1,6 +1,8 @@
 class Pipe {
-    constructor(game) {
-        this.game = game;
+    constructor(game, bird, x, tY, bY) {
+        Object.assign(this, {game, bird, x, tY, bY});
+
+    
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/pipes.png");
         this.animator = [];
 
@@ -9,11 +11,12 @@ class Pipe {
         this.animator[0] = new Animator(this.spritesheet, 0, 0, 28, 164, 1, 0.2, this.scale);
         this.animator[1] = new Animator(this.spritesheet, 28, 0, 28, 164, 1, 0.2, this.scale);
 
-        this.x = 1330;
         this.bottomPipeY = 450;
         this.topPipeY = -50;
+
         this.speed = 150;
         this.point = 0;
+        this.scored = false;
 
         this.updateBB();
     }
@@ -28,8 +31,28 @@ class Pipe {
     update() {
         this.x -= this.speed * this.game.clockTick;
 
-        if (this.x < 200) this.point++; // scoring broken
-        if (this.x <= -50) this.x = 1330;
+        if (this.x < 250 && !this.bird.dead && !this.scored) {
+            this.point++;
+            this.scored = true;
+        }
+
+        if (this.x <= -50) {
+            this.x = 1330;
+            this.scored = false;
+        }
+
+        const that = this;
+        this.game.entities.forEach(function (entity) {
+            if (entity.BB && that.topBB.collide(entity.BB)) {
+                if (entity instanceof Bird) {
+                    that.bird.dead = true;
+                }
+            } else if (entity.BB && that.botBB.collide(entity.BB)) {
+                if (entity instanceof Bird) {
+                    that.bird.dead = true;
+                }
+            }
+        });
 
         this.updateBB();
     }
