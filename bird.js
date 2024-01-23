@@ -5,9 +5,11 @@ class Bird {
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bird.png");
         this.animations = [];
 
-        this.animations[0] = new Animator(this.spritesheet, 0, 0, 24, 15, 1, 0.2, 2.5);
-        this.animations[1] = new Animator(this.spritesheet, 24, 0, 29, 15, 1, 0.2, 2.5);
-        this.animations[2] = new Animator(this.spritesheet, 56, 0, 24, 15, 1, 0.2, 2.5);
+        this.scale = 2.5;
+
+        this.animations[0] = new Animator(this.spritesheet, 0, 0, 24, 15, 1, 0.2, this.scale);
+        this.animations[1] = new Animator(this.spritesheet, 24, 0, 29, 15, 1, 0.2, this.scale);
+        this.animations[2] = new Animator(this.spritesheet, 56, 0, 24, 15, 1, 0.2, this.scale);
 
         this.x = 300;
         this.y = 350;
@@ -15,8 +17,18 @@ class Bird {
 
         this.i = 1;
 
+        this.birdWidth = this.animations[this.i].width;
+        this.birdHeight = this.animations[this.i].height;
+
         this.mapWidth = this.map.getWidth();
         this.mapHeight = this.map.getHeight();
+
+        this.updateBB();
+    }
+
+    updateBB() {
+        this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x, this.y, this.birdWidth * 1.8, this.birdHeight * this.scale);
     }
 
     update() {
@@ -50,9 +62,27 @@ class Bird {
         }
 
         this.y = Math.max(0, Math.min(this.y, this.mapHeight - this.animations[0].height));
+
+
+        // collision
+        let that = this;
+        this.game.entities.forEach(function (entity) {
+            if (entity.BB && that.BB.collide(entity.BB)) {
+                if (entity instanceof Pipe) {
+                    this.dead = true;
+                }
+            }
+        });
+
+        this.updateBB();
     }
 
     draw(ctx) {
         this.animations[this.i].drawFrame(this.game.clockTick, ctx, this.x, this.y);
+
+        if (params.DEBUG) {
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
+        }
     }
 }
