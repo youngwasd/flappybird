@@ -8,18 +8,22 @@ class Bird {
         this.scale = 2.5;
         this.dead = false;
 
-        this.animations[0] = new Animator(this.spritesheet, 0, 0, 24, 15, 1, 0.2, this.scale);
-        this.animations[1] = new Animator(this.spritesheet, 24, 0, 29, 15, 1, 0.2, this.scale);
-        this.animations[2] = new Animator(this.spritesheet, 56, 0, 24, 15, 1, 0.2, this.scale);
+        this.animations[0] = new Animator(this.spritesheet, 2, 0, 18, 15, 1, 0.3, this.scale); // old animations
+        this.animations[1] = new Animator(this.spritesheet, 30, 0, 18, 15, 1, 0.3, this.scale);
+        this.animations[2] = new Animator(this.spritesheet, 58, 0, 18, 15, 1, 0.3, this.scale);
 
-        this.x = 300;
-        this.y = 350;
+        this.animator = new Animator(this.spritesheet, 2, 0, 28, 15, 3, 0.1, this.scale); // new one
+
+        this.x = this.map.getWidth() / 8;
+        this.y = this.map.getHeight() / 2;
         this.speed = 200;
 
-        this.i = 1;
+        this.i = 1; // old counter for animations
 
-        this.birdWidth = this.animations[this.i].width;
-        this.birdHeight = this.animations[this.i].height;
+        //this.birdWidth = this.animations[this.i].width;
+        //this.birdHeight = this.animations[this.i].height; // old 
+        this.birdWidth = this.animator.width - 9; // new
+        this.birdHeight = this.animator.height;
 
         this.mapWidth = this.map.getWidth();
         this.mapHeight = this.map.getHeight();
@@ -36,8 +40,8 @@ class Bird {
         const elapsed = this.game.clockTick;
         let deltaY = 0;
     
-        if (this.game.space && !this.spacePressed) {
-            deltaY -= (this.speed + 100) * elapsed;
+        if ((this.game.space && !this.spacePressed) || this.game.click) {
+            deltaY -= this.speed * elapsed;
             this.spacePressed = true;
             this.ticksBeforeFalling = 0;
             this.i = 0;
@@ -48,7 +52,7 @@ class Bird {
                 deltaY += this.speed * elapsed;
                 this.i = 2;
             } else if (this.ticksBeforeFalling <= 60) {
-                deltaY -= (this.speed + 100) * elapsed;
+                deltaY -= this.speed * elapsed;
                 this.i = 0;
             }
 
@@ -62,18 +66,25 @@ class Bird {
             this.y += normalizedDeltaY;
         }
 
-        this.y = Math.max(0, Math.min(this.y, this.mapHeight - this.animations[0].height));
+        if (this.y > this.mapHeight) {
+            this.dead = true;
+        } else if (this.y < 0) {
+            this.dead = true;
+        }
+        
+        //this.birdWidth = this.animations[this.i].width;
+        //this.birdHeight = this.animations[this.i].height; // old
+        this.birdWidth = this.animator.width - 9; // new
+        this.birdHeight = this.animator.height;
 
-        this.birdWidth = this.animations[this.i].width;
-        this.birdHeight = this.animations[this.i].height;
-
-        // collision
         this.updateBB();
     }
 
     draw(ctx) {
-        this.animations[this.i].drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        //this.animations[this.i].drawFrame(this.game.clockTick, ctx, this.x, this.y); // old
 
+        this.animator.drawFrame(this.game.clockTick, ctx, this.x, this.y); // new
+        
         if (params.DEBUG) {
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);

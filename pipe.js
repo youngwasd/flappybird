@@ -1,73 +1,124 @@
 class Pipe {
-    constructor(game, bird, x, tY, bY) {
-        Object.assign(this, {game, bird, x, tY, bY});
+    constructor(game, bird, map) {
+        Object.assign(this, {game, bird, map});
 
-    
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/pipes.png");
         this.animator = [];
 
         this.scale = 2;
 
-        this.animator[0] = new Animator(this.spritesheet, 0, 0, 28, 164, 1, 0.2, this.scale);
-        this.animator[1] = new Animator(this.spritesheet, 28, 0, 28, 164, 1, 0.2, this.scale);
-
-        this.bottomPipeY = 450;
-        this.topPipeY = -50;
+        this.animator[0] = new Animator(this.spritesheet, 0, 2, 28, 162, 1, 0.2, this.scale);
+        this.animator[1] = new Animator(this.spritesheet, 28, 2, 28, 162, 1, 0.2, this.scale);
 
         this.speed = 150;
         this.point = 0;
-        this.scored = false;
+
+        this.pipeHeight = this.animator[0].height * this.scale;
+        this.pipeWidth = this.animator[0].width * this.scale;
+        this.pipeX = this.map.getWidth();
+        this.pipeY = 0;
+
+        this.topPipeArray = [];
+        this.botPipeArray = [];
+
+        setInterval(() => {
+            this.pipes();
+        }, 2000);
 
         this.updateBB();
     }
 
     updateBB() {
-        this.lastTopBB = this.topBB;
-        this.lastBotBB = this.botBB;
-        this.topBB = new BoundingBox(this.x, this.topPipeY, this.animator[0].width * this.scale, this.animator[0].height * this.scale);
-        this.botBB = new BoundingBox(this.x, this.bottomPipeY, this.animator[1].width * this.scale, this.animator[1].height * this.scale);
+        this.topPipeArray.forEach(function(pipe) {
+            pipe.topBB = new BoundingBox(pipe.x, pipe.y, pipe.width, pipe.height);
+        });
+    
+        this.botPipeArray.forEach(function(pipe) {
+            pipe.botBB = new BoundingBox(pipe.x, pipe.y, pipe.width, pipe.height);
+        });
     };
 
+    pipes() {
+        const rand = this.pipeHeight / 4 - Math.random() * (this.pipeHeight / 2);
+    
+        let topPipe = {
+            x: this.pipeX,
+            y: rand,
+            width: this.pipeWidth,
+            height: this.pipeHeight,
+            passed: false
+        }
+    
+        this.topPipeArray.push(topPipe);
+    
+        let botPipe = {
+            x: this.pipeX,
+            y: rand + this.pipeHeight + this.map.getWidth() / 8,
+            width: this.pipeWidth,
+            height: this.pipeHeight,
+            passed: false
+        }
+    
+        this.botPipeArray.push(botPipe);
+    }
+    
+
     update() {
-        this.x -= this.speed * this.game.clockTick;
-
-        if (this.x < 250 && !this.bird.dead && !this.scored) {
-            this.point++;
-            this.scored = true;
-        }
-
-        if (this.x <= -50) {
-            this.x = 1330;
-            this.scored = false;
-        }
-
         const that = this;
-        this.game.entities.forEach(function (entity) {
-            if (entity.BB && that.topBB.collide(entity.BB)) {
-                if (entity instanceof Bird) {
-                    that.bird.dead = true;
+        this.topPipeArray.forEach(function (pipe) {
+            that.game.entities.forEach(function (entity) {
+                if (entity.BB && pipe.topBB && pipe.topBB.collide(entity.BB)) {
+                    if (entity instanceof Bird) {
+                        that.bird.dead = true;
+                    }
                 }
-            } else if (entity.BB && that.botBB.collide(entity.BB)) {
-                if (entity instanceof Bird) {
-                    that.bird.dead = true;
-                }
-            }
+            });
         });
 
-        this.updateBB();
+        this.botPipeArray.forEach(function (pipe) {
+            that.game.entities.forEach(function (entity) {
+                if (entity.BB && pipe.botBB && pipe.botBB.collide(entity.BB)) {
+                    if (entity instanceof Bird) {
+                        that.bird.dead = true;
+                    }
+                }
+            });
+        });
+
+        this.updateBB(); 
     }
 
     draw(ctx) {
-        this.animator[0].drawFrame(this.game.clockTick, ctx, this.x, this.topPipeY);
-        this.animator[1].drawFrame(this.game.clockTick, ctx, this.x, this.bottomPipeY);
+        this.topPipeArray.forEach(function (pipe) {
+            pipe.x -= this.speed * this.game.clockTick;
+            this.animator[0].drawFrame(this.game.clockTick, ctx, pipe.x, pipe.y);
 
-        if (params.DEBUG) {
-            ctx.strokeStyle = 'Red';
-            ctx.strokeRect(this.topBB.x, this.topBB.y, this.topBB.width, this.topBB.height);
+            if (!pipe.passed && (pipe.x + pipe.width) < this.bird.x && !this.bird.dead) {
+                this.point++;
+                pipe.passed = true;
+            }
+    
+            if (params.DEBUG) {
+                ctx.strokeStyle = 'Red';
+                ctx.strokeRect(pipe.topBB.x, pipe.topBB.y, pipe.topBB.width, pipe.topBB.height);
+            }
+        }, this);
+    
+        this.botPipeArray.forEach(function (pipe) {
+            pipe.x -= this.speed * this.game.clockTick;
+            this.animator[1].drawFrame(this.game.clockTick, ctx, pipe.x, pipe.y);
 
-            ctx.strokeStyle = 'Red';
-            ctx.strokeRect(this.botBB.x, this.botBB.y, this.botBB.width, this.botBB.height);
-        }
+            if (!pipe.passed && (pipe.x + pipe.width) < this.bird.x && !this.bird.dead) {
+                pipe.passed = true; // point already incremented from top pipe just setting this pipe to be passed
+            }
+    
+            if (params.DEBUG) {
+                ctx.strokeStyle = 'Red';
+                ctx.strokeRect(pipe.botBB.x, pipe.botBB.y, pipe.botBB.width, pipe.botBB.height);
+            }
+        }, this);
+        
+        this.updateBB();
 
         ctx.font = "30px Arial";
         ctx.fillStyle = "black";

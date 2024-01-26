@@ -11,6 +11,7 @@ class GameEngine {
 
         // Information on the input
         this.space = false;
+        this.click = false;
 
         this.gamepad = null;
 
@@ -37,6 +38,7 @@ class GameEngine {
 
     startInput() {
         this.keyboardActive = false;
+        this.mouseActive = false;
     
         const keydownListener = (e) => {
             this.keyboardActive = true;
@@ -55,12 +57,19 @@ class GameEngine {
                     break;
             }
         };
-    
+
+        const mouseclickListener = (e) => {
+            this.mouseActive = true;
+            this.click = true;
+        };
+
+        this.mouseclick = mouseclickListener;
         this.keydown = keydownListener;
         this.keyup = keyupListener;
     
         this.ctx.canvas.addEventListener("keydown", this.keydown, false);
         this.ctx.canvas.addEventListener("keyup", this.keyup, false);
+        this.ctx.canvas.addEventListener("click", this.mouseclick, false);
     };
     
 
@@ -113,5 +122,6 @@ class GameEngine {
         this.clockTick = this.timer.tick();
         this.update();
         this.draw();
+        this.click = null;
     };
 };
