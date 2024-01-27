@@ -39,6 +39,8 @@ class Pipe {
     };
 
     pipes() {
+        if (this.bird.dead) return; // stop making pipes
+
         const rand = this.pipeHeight / 4 - Math.random() * (this.pipeHeight / 2);
     
         let topPipe = {
