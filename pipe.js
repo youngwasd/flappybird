@@ -7,8 +7,8 @@ class Pipe {
 
         this.scale = 2;
 
-        this.animator[0] = new Animator(this.spritesheet, 0, 2, 28, 162, 1, 0.2, this.scale);
-        this.animator[1] = new Animator(this.spritesheet, 28, 2, 28, 162, 1, 0.2, this.scale);
+        this.animator[0] = new Animator(this.spritesheet, 0, 0, 27, 330, 1, 0.2, this.scale);
+        this.animator[1] = new Animator(this.spritesheet, 27, 0, 27, 330, 1, 0.2, this.scale);
 
         this.speed = 150;
         this.point = 0;
@@ -42,10 +42,10 @@ class Pipe {
         if (this.bird.dead) return; // stop making pipes
 
         const rand = this.pipeHeight / 4 - Math.random() * (this.pipeHeight / 2);
-    
+
         let topPipe = {
             x: this.pipeX,
-            y: rand,
+            y: rand - (this.pipeHeight / 2),
             width: this.pipeWidth,
             height: this.pipeHeight,
             passed: false
@@ -55,7 +55,7 @@ class Pipe {
     
         let botPipe = {
             x: this.pipeX,
-            y: rand + this.pipeHeight + this.map.getWidth() / 8,
+            y: rand + (this.pipeHeight / 2) + this.map.getWidth() / 8,
             width: this.pipeWidth,
             height: this.pipeHeight,
             passed: false
@@ -64,7 +64,6 @@ class Pipe {
         this.botPipeArray.push(botPipe);
     }
     
-
     update() {
         const that = this;
         this.topPipeArray.forEach(function (pipe) {

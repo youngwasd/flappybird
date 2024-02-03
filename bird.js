@@ -3,14 +3,14 @@ class Bird {
         this.game = game;
         this.map = map;
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/bird.png");
-        this.animations = [];
+        //this.animations = [];
 
         this.scale = 2.5;
         this.dead = false;
 
-        this.animations[0] = new Animator(this.spritesheet, 2, 0, 18, 15, 1, 0.3, this.scale); // old animations
-        this.animations[1] = new Animator(this.spritesheet, 30, 0, 18, 15, 1, 0.3, this.scale);
-        this.animations[2] = new Animator(this.spritesheet, 58, 0, 18, 15, 1, 0.3, this.scale);
+        // this.animations[0] = new Animator(this.spritesheet, 2, 0, 18, 15, 1, 0.3, this.scale); // old animations
+        // this.animations[1] = new Animator(this.spritesheet, 30, 0, 18, 15, 1, 0.3, this.scale);
+        // this.animations[2] = new Animator(this.spritesheet, 58, 0, 18, 15, 1, 0.3, this.scale);
 
         this.animator = new Animator(this.spritesheet, 2, 0, 28, 15, 3, 0.1, this.scale); // new one
 
@@ -18,7 +18,7 @@ class Bird {
         this.y = this.map.getHeight() / 2;
         this.speed = 200;
 
-        this.i = 1; // old counter for animations
+        //this.i = 1; // old counter for animations
 
         //this.birdWidth = this.animations[this.i].width;
         //this.birdHeight = this.animations[this.i].height; // old 
@@ -44,16 +44,16 @@ class Bird {
             deltaY -= this.speed * elapsed;
             this.spacePressed = true;
             this.ticksBeforeFalling = 0;
-            this.i = 0;
+            //this.i = 0;
         } else {
             this.ticksBeforeFalling = (this.ticksBeforeFalling || 0) + 1;
             
             if (this.ticksBeforeFalling > 60) {
                 deltaY += this.speed * elapsed;
-                this.i = 2;
+                //this.i = 2;
             } else if (this.ticksBeforeFalling <= 60) {
                 deltaY -= this.speed * elapsed;
-                this.i = 0;
+                //this.i = 0;
             }
 
             this.spacePressed = this.game.space;

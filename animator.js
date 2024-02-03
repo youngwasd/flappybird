@@ -13,9 +13,9 @@ class Animator {
 
         const frame = this.currentFrame();
 
-        ctx.drawImage(this.spritesheet, this.xStart + this.width * frame, this.yStart, this.width, this.height, x, y, this.width * this.scale, this.height * this.scale)
+        ctx.drawImage(this.spritesheet, this.xStart + this.width * frame, this.yStart, this.width, this.height, x, y, this.width * this.scale, this.height * this.scale);
     };
-
+    
     currentFrame() {
         return Math.floor(this.elapsedTime / this.frameDuration);
     };
