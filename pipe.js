@@ -39,7 +39,7 @@ class Pipe {
     };
 
     pipes() {
-        //if (this.bird.dead) return; // stop making pipes
+        if (this.bird.dead) return;
 
         /**
          * get original y value subtract 1/4 of the pipeheight and multiply that by 1 or 3
@@ -74,6 +74,11 @@ class Pipe {
     }
     
     update() {
+        if (this.bird.dead) {
+            this.topPipeArray = [];
+            this.botPipeArray = [];
+        }
+
         const that = this;
         this.topPipeArray.forEach(function (pipe) {
             that.game.entities.forEach(function (entity) {
@@ -130,8 +135,10 @@ class Pipe {
         
         this.updateBB();
 
-        ctx.font = "30px Arial";
-        ctx.fillStyle = "black";
-        ctx.fillText("Score: " + this.point, 10, 50);
+        if (!this.bird.dead) {
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "black";
+            ctx.fillText("Score: " + this.point, 10, 50);
+        }
     }
 }

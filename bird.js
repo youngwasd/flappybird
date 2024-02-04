@@ -48,6 +48,12 @@ class Bird {
         } else if (this.y < 0) {
             this.dead = true;
         }
+
+        // if (this.dead) {
+        //     this.x = this.map.getWidth() / 8;
+        //     this.y = this.map.getHeight() / 2;
+        //     this.velocity = 0;
+        // }
         
         this.birdWidth = this.animator.width - 9;
         this.birdHeight = this.animator.height;
