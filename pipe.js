@@ -39,13 +39,22 @@ class Pipe {
     };
 
     pipes() {
-        if (this.bird.dead) return; // stop making pipes
+        //if (this.bird.dead) return; // stop making pipes
 
-        const rand = this.pipeHeight / 4 - Math.random() * (this.pipeHeight / 2);
+        /**
+         * get original y value subtract 1/4 of the pipeheight and multiply that by 1 or 3
+         * to get a random value to shift the pipe up or down that is between 1/4 and 3/4 of the height
+         * math.random = 0 -> pipeY - pipeheight / 4 * (1 + 0 * 2) = 0 - 165 * 1 = -165
+         * math.random = 1 -> pipeY - pipeheight / 4 * (1 + 1 * 2) = 0 - 165 * 3 = -495
+         */
 
-        let topPipe = {
+        const rand = this.pipeY - (this.pipeHeight / 4) * (1 + Math.random() * 2);
+
+        const opening = this.map.getWidth() / 8;
+
+        const topPipe = {
             x: this.pipeX,
-            y: rand - (this.pipeHeight / 2),
+            y: rand,
             width: this.pipeWidth,
             height: this.pipeHeight,
             passed: false
@@ -53,9 +62,9 @@ class Pipe {
     
         this.topPipeArray.push(topPipe);
     
-        let botPipe = {
+        const botPipe = {
             x: this.pipeX,
-            y: rand + (this.pipeHeight / 2) + this.map.getWidth() / 8,
+            y: rand + this.pipeHeight + opening,
             width: this.pipeWidth,
             height: this.pipeHeight,
             passed: false
