@@ -31,6 +31,37 @@ class Bird {
     }
 
     update() {
+
+        /**
+            const elapsed = this.game.clockTick;
+            let deltaY = 0;
+        
+            if (this.game.space && !this.spacePressed) {
+                deltaY -= (this.speed + 100) * elapsed;
+                this.spacePressed = true;
+                this.ticksBeforeFalling = 0;
+                this.i = 0;
+            } else {
+                this.ticksBeforeFalling = (this.ticksBeforeFalling || 0) + 1;
+                
+                if (this.ticksBeforeFalling > 60) {
+                    deltaY += this.speed * elapsed;
+                    this.i = 2;
+                } else if (this.ticksBeforeFalling <= 60) {
+                    deltaY -= (this.speed + 100) * elapsed;
+                    this.i = 0;
+                }
+
+                this.spacePressed = this.game.space;
+            }
+            
+            const length = Math.sqrt(deltaY * deltaY);
+            if (length !== 0) {
+                const normalizedDeltaY = (deltaY / length) * this.speed * elapsed;
+
+                this.y += normalizedDeltaY;
+            }
+         */
         this.spacePressed = false;
 
         if ((this.game.space && !this.spacePressed) || this.game.click) {
@@ -63,6 +94,8 @@ class Bird {
 
     draw(ctx) {
         this.animator.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        ctx.font = "20px Arial";
+        ctx.fillText(`FPS: ${this.game.timer.ticks.length}`, 1190, 20);
         
         if (params.DEBUG) {
             ctx.strokeStyle = 'Red';
