@@ -7,6 +7,11 @@ ASSET_MANAGER.queueDownload("./sprites/map.png");
 ASSET_MANAGER.queueDownload("./sprites/pipes.png");
 ASSET_MANAGER.queueDownload("./sprites/playButton.png");
 ASSET_MANAGER.queueDownload("./sprites/title.png");
+ASSET_MANAGER.queueDownload("./sprites/getReady.png");
+ASSET_MANAGER.queueDownload("./sprites/scoreCard.png");
+ASSET_MANAGER.queueDownload("./sprites/silver.png");
+ASSET_MANAGER.queueDownload("./sprites/gold.png");
+ASSET_MANAGER.queueDownload("./sprites/game_over.png");
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");

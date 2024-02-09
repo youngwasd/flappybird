@@ -31,7 +31,6 @@ class Bird {
     }
 
     update() {
-
         /**
             const elapsed = this.game.clockTick;
             let deltaY = 0;
@@ -65,7 +64,7 @@ class Bird {
         this.spacePressed = false;
 
         if ((this.game.space && !this.spacePressed) || this.game.click) {
-            this.velocity = -6;
+           // this.velocity = -6;
             this.spacePressed = true;
         } else {
             this.spacePressed = this.game.space;
@@ -75,17 +74,11 @@ class Bird {
         this.y += this.velocity;
 
         if (this.y > this.mapHeight) {
-            this.dead = true;
+            this.game.camera.gameOver = true;
         } else if (this.y < 0) {
-            this.dead = true;
+            this.game.camera.gameOver = true;
         }
 
-        // if (this.dead) {
-        //     this.x = this.map.getWidth() / 8;
-        //     this.y = this.map.getHeight() / 2;
-        //     this.velocity = 0;
-        // }
-        
         this.birdWidth = this.animator.width - 9;
         this.birdHeight = this.animator.height;
 
@@ -94,8 +87,6 @@ class Bird {
 
     draw(ctx) {
         this.animator.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-        ctx.font = "20px Arial";
-        ctx.fillText(`FPS: ${this.game.timer.ticks.length}`, 1190, 20);
         
         if (params.DEBUG) {
             ctx.strokeStyle = 'Red';

@@ -39,7 +39,7 @@ class Pipe {
     };
 
     pipes() {
-        if (this.bird.dead) return;
+        if (this.game.camera.gameOver) return;
 
         /**
          * get original y value subtract 1/4 of the pipeheight and multiply that by 1 or 3
@@ -74,7 +74,7 @@ class Pipe {
     }
     
     update() {
-        if (this.bird.dead) {
+        if (this.game.camera.gameOver) {
             this.topPipeArray = [];
             this.botPipeArray = [];
         }
@@ -84,7 +84,7 @@ class Pipe {
             that.game.entities.forEach(function (entity) {
                 if (entity.BB && pipe.topBB && pipe.topBB.collide(entity.BB)) {
                     if (entity instanceof Bird) {
-                        that.bird.dead = true;
+                        that.game.camera.gameOver = true;
                     }
                 }
             });
@@ -94,7 +94,7 @@ class Pipe {
             that.game.entities.forEach(function (entity) {
                 if (entity.BB && pipe.botBB && pipe.botBB.collide(entity.BB)) {
                     if (entity instanceof Bird) {
-                        that.bird.dead = true;
+                        that.game.camera.gameOver = true;
                     }
                 }
             });
@@ -108,7 +108,7 @@ class Pipe {
             pipe.x -= this.speed * this.game.clockTick;
             this.animator[0].drawFrame(this.game.clockTick, ctx, pipe.x, pipe.y);
 
-            if (!pipe.passed && (pipe.x + pipe.width) < this.bird.x && !this.bird.dead) {
+            if (!pipe.passed && (pipe.x + pipe.width) < this.bird.x && !this.game.camera.gameOver) {
                 this.point++;
                 pipe.passed = true;
             }
@@ -123,7 +123,7 @@ class Pipe {
             pipe.x -= this.speed * this.game.clockTick;
             this.animator[1].drawFrame(this.game.clockTick, ctx, pipe.x, pipe.y);
 
-            if (!pipe.passed && (pipe.x + pipe.width) < this.bird.x && !this.bird.dead) {
+            if (!pipe.passed && (pipe.x + pipe.width) < this.bird.x && !this.game.camera.gameOver) {
                 pipe.passed = true; // point already incremented from top pipe just setting this pipe to be passed
             }
     
@@ -135,10 +135,10 @@ class Pipe {
         
         this.updateBB();
 
-        if (!this.bird.dead) {
+        if (!this.game.camera.gameOver) {
             ctx.font = "30px Arial";
             ctx.fillStyle = "black";
-            ctx.fillText("Score: " + this.point, 10, 50);
+            ctx.fillText("Score: " + this.point, 10, 30);
         }
     }
 }

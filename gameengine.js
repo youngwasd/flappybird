@@ -74,6 +74,7 @@ class GameEngine {
         const mouseclickListener = (e) => {
             this.mouseActive = true;
             this.click = getXandY(e);
+            if (params.DEBUG) console.log(this.click);
         };
 
         this.mouseclick = mouseclickListener;
