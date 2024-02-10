@@ -23,7 +23,7 @@ class Pipe {
 
         setInterval(() => {
             this.pipes();
-        }, 2000);
+        }, 1500);
 
         this.updateBB();
     }
@@ -136,9 +136,9 @@ class Pipe {
         this.updateBB();
 
         if (!this.game.camera.gameOver) {
-            ctx.font = "30px Arial";
+            ctx.font = "20px Arial";
             ctx.fillStyle = "black";
-            ctx.fillText("Score: " + this.point, 10, 30);
+            ctx.fillText("Score: " + this.point, 5, 20);
         }
     }
 }

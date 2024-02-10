@@ -7,6 +7,8 @@ class SceneManager {
         this.title = true;
         this.gameOver = false;
 
+        this.best = 0;
+
         this.loadLevel(false, true);
     }
 
@@ -69,7 +71,6 @@ class SceneManager {
 class TransitionScreen {
     constructor(game, gameOver) {
         Object.assign(this, {game, gameOver});
-
         this.countDown = 4;
     };
 
@@ -82,6 +83,8 @@ class TransitionScreen {
     draw(ctx) {
         ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/map.png"), 0, 0, 1280, 720);
         if (this.gameOver) {
+            if (this.game.camera.pipe.point > this.game.camera.best) this.game.camera.best = this.game.camera.pipe.point;
+
             ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/game_over.png"), ctx.canvas.width / 2 - 155, ctx.canvas.height / 2 - 200, 297, 69);
             ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/scoreCard.png"), ctx.canvas.width / 2 - 130, ctx.canvas.height / 2 - 50, 238, 122);
             if (this.game.camera.pipe.point > 30) { // gold medal
@@ -95,12 +98,18 @@ class TransitionScreen {
             ctx.lineWidth = 2;
             ctx.strokeText(this.game.camera.pipe.point, ctx.canvas.width / 2 + 55, ctx.canvas.height / 2 + 5);
             ctx.fillText(this.game.camera.pipe.point, ctx.canvas.width / 2 + 55, ctx.canvas.height / 2 + 5);
+            ctx.strokeText(this.game.camera.best, ctx.canvas.width / 2 + 55, ctx.canvas.height / 2 + 47);
+            ctx.fillText(this.game.camera.best, ctx.canvas.width / 2 + 55, ctx.canvas.height / 2 + 47)
         } else {
             ctx.drawImage(ASSET_MANAGER.getAsset("./sprites/getReady.png"), ctx.canvas.width / 2 - 140, ctx.canvas.height / 2 - 200, 282, 81);
-            ctx.font = "50px Impact";
+            ctx.font = "30px Impact";
             ctx.fillStyle = "white";
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
+            ctx.strokeText("Press Space or Tap the Screen to Jump!", ctx.canvas.width / 2 - 225, ctx.canvas.height / 2 - 50);
+            ctx.fillText("Press Space or Tap the Screen to Jump!", ctx.canvas.width / 2 - 225, ctx.canvas.height / 2 - 50);
+
+            ctx.font = "50px Impact";
             ctx.strokeText(Math.floor(this.countDown), ctx.canvas.width / 2 - 15, ctx.canvas.height / 2 + 50);
             ctx.fillText(Math.floor(this.countDown), ctx.canvas.width / 2 - 15, ctx.canvas.height / 2 + 50);
         }
