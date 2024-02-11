@@ -17,8 +17,8 @@ class Bird {
         this.gravity = 1000;
         this.velocity = 0;
 
-        this.birdWidth = this.animator.width - 9;
-        this.birdHeight = this.animator.height;
+        this.birdWidth = this.animator.width - 14;
+        this.birdHeight = this.animator.height - 5;
 
         this.mapWidth = this.map.getWidth();
         this.mapHeight = this.map.getHeight();
@@ -28,7 +28,7 @@ class Bird {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, this.birdWidth * this.scale, this.birdHeight * this.scale);
+        this.BB = new BoundingBox(this.x + 6, this.y + 7, this.birdWidth * this.scale, this.birdHeight * this.scale);
     };
 
     update() {
@@ -37,7 +37,7 @@ class Bird {
         this.velocity += this.gravity * elapsed;
 
         if ((this.game.space && !this.spacePressed) || this.game.click) {
-            this.velocity = -425;
+            this.velocity = -435;
             this.spacePressed = true;
         } else {
             this.spacePressed = this.game.space;
