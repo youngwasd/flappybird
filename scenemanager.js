@@ -34,9 +34,19 @@ class SceneManager {
                 this.game.addEntity(this.background);
             }
         }
+    };
+    
+    updateAudio() {
+        const mute = document.getElementById("mute").checked;
+        const volume = document.getElementById("volume").value;
+
+        ASSET_MANAGER.muteAudio(mute);
+        ASSET_MANAGER.adjustVolume(volume);
     }
 
     update() {
+        this.updateAudio();
+        
         if (this.title && this.game.click) {
             if (this.game.click.x && this.game.click.y) {
                 if ((this.game.click.x >= 13 && this.game.click.x <= 17)

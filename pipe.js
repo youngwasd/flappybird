@@ -85,6 +85,7 @@ class Pipe {
                 if (entity.BB && pipe.topBB && pipe.topBB.collide(entity.BB)) {
                     if (entity instanceof Bird) {
                         that.game.camera.gameOver = true;
+                        ASSET_MANAGER.playAsset("./sounds/hit.wav");
                     }
                 }
             });
@@ -95,6 +96,7 @@ class Pipe {
                 if (entity.BB && pipe.botBB && pipe.botBB.collide(entity.BB)) {
                     if (entity instanceof Bird) {
                         that.game.camera.gameOver = true;
+                        ASSET_MANAGER.playAsset("./sounds/hit.wav");
                     }
                 }
             });
@@ -111,6 +113,7 @@ class Pipe {
             if (!pipe.passed && (pipe.x + pipe.width) < this.bird.x && !this.game.camera.gameOver) {
                 this.point++;
                 pipe.passed = true;
+                ASSET_MANAGER.playAsset("./sounds/point.wav");
             }
     
             if (params.DEBUG) {

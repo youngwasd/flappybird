@@ -38,6 +38,7 @@ class Bird {
 
         if ((this.game.space && !this.spacePressed) || this.game.click) {
             this.velocity = -435;
+            ASSET_MANAGER.playAsset("./sounds/jump.wav");
             this.spacePressed = true;
         } else {
             this.spacePressed = this.game.space;
