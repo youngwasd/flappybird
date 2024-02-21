@@ -21,7 +21,7 @@ class Pipe {
         this.topPipeArray = [];
         this.botPipeArray = [];
 
-        setInterval(() => {
+        this.interval = setInterval(() => {
             this.pipes();
         }, 1500);
 
@@ -40,6 +40,19 @@ class Pipe {
 
     pipes() {
         if (this.game.camera.gameOver) return;
+
+        // increase the interval of which pipes spawn after getting 30 points
+        if (this.point === 30) {
+            clearInterval(this.interval);
+            this.interval = setInterval(() => {
+                this.pipes();
+            }, 1300);
+        }
+
+        // increase the speed of the pipes after 50 points
+        if (this.point === 50) {
+            this.speed += 25;
+        }
 
         /**
          * get original y value subtract 1/4 of the pipeheight and multiply that by 1 or 3
@@ -139,9 +152,12 @@ class Pipe {
         this.updateBB();
 
         if (!this.game.camera.gameOver) {
-            ctx.font = "20px Arial";
-            ctx.fillStyle = "black";
-            ctx.fillText("Score: " + this.point, 5, 20);
+            ctx.font = "40px Impact";
+            ctx.fillStyle = "white";
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 2;
+            ctx.strokeText(this.point, ctx.canvas.width / 2, 40);
+            ctx.fillText(this.point, ctx.canvas.width / 2, 40);
         }
     }
 }
