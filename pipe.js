@@ -49,8 +49,8 @@ class Pipe {
             }, 1300);
         }
 
-        // increase the speed of the pipes after 50 points
-        if (this.point === 50) {
+        // increase the speed of the pipes after every 50 points
+        if (this.point % 50 === 0) {
             this.speed += 25;
         }
 
