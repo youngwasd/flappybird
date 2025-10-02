@@ -38,7 +38,8 @@ I decided to recreate Flappy Bird as I had missed playing it as a kid, so I want
 
 ## 📬 Contact
 
-Let’s connect!  
+Let’s connect!
+
 📧 Email: [youngworking110@gmail.com]  
 💼 [LinkedIn](https://www.linkedin.com/in/youngwasd/)  
 🐱 [GitHub](https://github.com/youngwasd)
